@@ -1,36 +1,25 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-
 <meta charset="UTF-8">
-
 <meta name="viewport"
-content="width=device-width,
-initial-scale=1,
-maximum-scale=1,
-user-scalable=no">
-
-<title>Bizim Evrenimiz</title>
+      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Sana Özel Evrenim ❤️</title>
 
 <style>
-
 *{
     box-sizing:border-box;
     margin:0;
     padding:0;
 }
 
-html,
-body{
+html,body{
     width:100%;
     height:100%;
     overflow:hidden;
     background:#000;
-}
-
-body{
-    touch-action:none;
     font-family:Arial,Helvetica,sans-serif;
+    touch-action:none;
 }
 
 canvas{
@@ -38,1551 +27,966 @@ canvas{
     inset:0;
     width:100%;
     height:100%;
+    display:block;
+    background:#000;
 }
-
-
-/* ------------------------------------------------
-   GİRİŞ YAZISI
------------------------------------------------- */
 
 #intro{
-
     position:fixed;
-
     inset:0;
-
+    z-index:10;
     display:flex;
-
+    flex-direction:column;
     align-items:center;
-
     justify-content:center;
-
     text-align:center;
-
-    color:#d9d6e2;
-
-    font-size:
-        clamp(
-            17px,
-            4.5vw,
-            28px
-        );
-
-    letter-spacing:
-        .20em;
-
     pointer-events:none;
+    transition:opacity 2s ease;
+}
 
-    animation:
-        intro 5s ease forwards;
-
+#intro h1{
+    color:white;
+    font-size:clamp(28px,8vw,64px);
+    font-weight:300;
+    letter-spacing:5px;
     text-shadow:
-        0 0 12px
-        rgba(170,120,255,.5),
-
-        0 0 35px
-        rgba(100,60,255,.25);
+        0 0 10px #fff,
+        0 0 30px #c8a0ff,
+        0 0 70px #7d42ff;
 }
 
-
-@keyframes intro{
-
-    0%{
-        opacity:0;
-        transform:scale(.96);
-    }
-
-    20%{
-        opacity:1;
-        transform:scale(1);
-    }
-
-    75%{
-        opacity:1;
-    }
-
-    100%{
-        opacity:0;
-        transform:scale(1.03);
-    }
-
+#intro p{
+    margin-top:18px;
+    color:rgba(255,255,255,.75);
+    font-size:clamp(13px,3.5vw,18px);
+    letter-spacing:2px;
 }
-
-
-/* ------------------------------------------------
-   ALT YAZI
------------------------------------------------- */
 
 #hint{
-
     position:fixed;
-
-    left:0;
-    right:0;
-
-    bottom:17px;
-
+    bottom:24px;
+    left:50%;
+    transform:translateX(-50%);
+    z-index:5;
+    color:rgba(255,255,255,.6);
+    font-size:12px;
+    letter-spacing:1px;
     text-align:center;
-
-    color:
-        rgba(
-            255,
-            255,
-            255,
-            .35
-        );
-
-    font-size:10px;
-
-    letter-spacing:.10em;
-
     pointer-events:none;
-
-    transition:
-        opacity .8s;
-
 }
-
-
-/* ------------------------------------------------
-   BÜYÜYEN MESAJ
------------------------------------------------- */
 
 #message{
-
     position:fixed;
-
-    z-index:50;
-
     left:50%;
     top:50%;
-
-    width:
-        min(
-            88vw,
-            520px
-        );
-
-    padding:
-        32px 22px;
-
-    transform:
-        translate(-50%,-50%)
-        scale(.55);
-
-    opacity:0;
-
-    pointer-events:none;
-
-    text-align:center;
-
-    color:#fff;
-
-    font-size:
-        clamp(
-            23px,
-            7vw,
-            44px
-        );
-
-    line-height:1.25;
-
+    transform:translate(-50%,-50%) scale(.5);
+    width:min(88vw,500px);
+    padding:32px 25px;
+    border-radius:24px;
     background:
-        rgba(
-            5,
-            3,
-            14,
-            .92
-        );
-
-    border:
-        1px solid
-        rgba(
-            205,
-            170,
-            255,
-            .3
-        );
-
-    border-radius:25px;
-
+        radial-gradient(circle at top,
+        rgba(160,100,255,.25),
+        rgba(8,5,20,.96) 60%);
+    border:1px solid rgba(255,255,255,.25);
     box-shadow:
-
-        0 0 35px
-        rgba(
-            145,
-            75,
-            255,
-            .35
-        ),
-
-        0 0 100px
-        rgba(
-            100,
-            50,
-            255,
-            .15
-        );
-
-    backdrop-filter:
-        blur(18px);
-
+        0 0 30px rgba(140,70,255,.35),
+        inset 0 0 30px rgba(255,255,255,.04);
+    color:white;
+    text-align:center;
+    z-index:20;
+    opacity:0;
+    pointer-events:none;
     transition:
-        opacity .28s ease,
-        transform .28s ease;
-
+        opacity .35s ease,
+        transform .35s cubic-bezier(.2,1.4,.4,1);
 }
-
 
 #message.show{
-
     opacity:1;
-
-    transform:
-        translate(-50%,-50%)
-        scale(1);
-
+    transform:translate(-50%,-50%) scale(1);
     pointer-events:auto;
-
 }
 
-
-#message small{
-
-    display:block;
-
-    margin-top:16px;
-
-    color:
-        rgba(
-            255,
-            255,
-            255,
-            .38
-        );
-
-    font-size:10px;
-
+#messageText{
+    font-size:clamp(20px,5vw,30px);
+    line-height:1.5;
+    text-shadow:0 0 15px rgba(255,255,255,.35);
 }
 
-
-/* ------------------------------------------------
-   EKRAN KARARTMA
------------------------------------------------- */
-
-#vignette{
-
-    position:fixed;
-
-    inset:0;
-
-    pointer-events:none;
-
-    background:
-        radial-gradient(
-            ellipse at center,
-            transparent 30%,
-            rgba(0,0,0,.35) 72%,
-            rgba(0,0,0,.75) 100%
-        );
-
+#closeMessage{
+    margin-top:24px;
+    color:rgba(255,255,255,.5);
+    font-size:12px;
+    letter-spacing:1px;
 }
-
 </style>
-
 </head>
-
 
 <body>
 
-
 <canvas id="canvas"></canvas>
 
-
 <div id="intro">
-    EVRENİNDE BİR SIR VAR...
+    <h1>SANA ÖZEL</h1>
+    <p>Benim küçük evrenim...</p>
 </div>
-
-
-<div id="message"></div>
-
 
 <div id="hint">
-    DÖNDÜR • KEŞFET • MESAJLARA DOKUN
+    ✦ Galaksiyi parmağınla döndür ✦<br>
+    💜 Küçük ışıklara dokun
 </div>
 
-
-<div id="vignette"></div>
-
-
+<div id="message">
+    <div id="messageText"></div>
+    <div id="closeMessage">dokunarak kapat</div>
+</div>
 
 <script>
+/* =========================================================
+   SANA ÖZEL GALAKSİ
+   Harici kütüphane yok.
+   GitHub Pages + telefon uyumlu.
+========================================================= */
 
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
 
-/* =====================================================
-   MESAJLAR
-===================================================== */
-
-const messages = [
-
-    "SENİ SEVİYORUM ❤️",
-
-    "İYİ Kİ HAYATIMA GİRDİN ✨",
-
-    "İYİ Kİ VARSIN 💜",
-
-    "SEN BENİM EN GÜZEL TESADÜFÜMSÜN 🌙",
-
-    "SENİNLE HER ŞEY DAHA GÜZEL ♡",
-
-    "İYİ Kİ SENİ TANIDIM 🫶",
-
-    "GÜLÜŞÜN DÜNYAMIN EN GÜZEL YERİ ✨",
-
-    "SEN BENİM EN GÜZEL HİKAYEMSİN 📖",
-
-    "UZAKTA OLSAN DA KALBİMDESİN ❤️",
-
-    "HER GÜN SENİ DAHA ÇOK SEVİYORUM 💜",
-
-    "SENİNLE GEÇEN HER AN ÇOK DEĞERLİ 🌙",
-
-    "İYİ Kİ BİZ VARIZ ♾️",
-
-    "KALBİMİN EN GÜZEL YERİ SENİN 💗",
-
-    "SEN BENİM EVİMSİN 🏡",
-
-    "SONSUZA KADAR SEN ♡"
-
-];
-
-
-/* =====================================================
-   CANVAS
-===================================================== */
-
-const canvas =
-    document.getElementById(
-        "canvas"
-    );
-
-const ctx =
-    canvas.getContext(
-        "2d"
-    );
-
+const intro = document.getElementById("intro");
+const messageBox = document.getElementById("message");
+const messageText = document.getElementById("messageText");
 
 let W = 0;
 let H = 0;
+let CX = 0;
+let CY = 0;
 let DPR = 1;
 
-
 function resize(){
+    DPR = Math.min(window.devicePixelRatio || 1, 2);
 
-    DPR =
-        Math.min(
-            window.devicePixelRatio || 1,
-            2
-        );
+    W = window.innerWidth;
+    H = window.innerHeight;
 
+    canvas.width = W * DPR;
+    canvas.height = H * DPR;
 
-    W =
-        window.innerWidth;
+    canvas.style.width = W + "px";
+    canvas.style.height = H + "px";
 
+    ctx.setTransform(DPR,0,0,DPR,0,0);
 
-    H =
-        window.innerHeight;
-
-
-    canvas.width =
-        W * DPR;
-
-
-    canvas.height =
-        H * DPR;
-
-
-    canvas.style.width =
-        W + "px";
-
-
-    canvas.style.height =
-        H + "px";
-
-
-    ctx.setTransform(
-        DPR,
-        0,
-        0,
-        DPR,
-        0,
-        0
-    );
-
+    CX = W / 2;
+    CY = H / 2;
 }
 
-
+window.addEventListener("resize", resize);
 resize();
 
+/* =========================================================
+   MESAJLAR
+========================================================= */
 
-window.addEventListener(
-    "resize",
-    resize
-);
+const messages = [
+    "Sen benim en güzel tesadüfümsün. ❤️",
+    "Dünyada milyarlarca insan var ama ben seni seçtim.",
+    "Sen varken evren biraz daha güzel.",
+    "Gülüşün, en sevdiğim manzara.",
+    "İyi ki varsın.",
+    "Sana baktığımda zaman biraz yavaşlıyor.",
+    "Kalbimin en güzel köşesinde sen varsın.",
+    "Mesafeler ne kadar uzak olursa olsun, kalbim sana yakın.",
+    "Sen benim huzurumsun.",
+    "Bir yıldız kayarsa dilek tutmam. Çünkü dileğim zaten sensin.",
+    "Seni düşündüğüm her an yüzümde bir gülümseme oluyor.",
+    "Bu evrendeki en güzel şeylerden biri sensin.",
+    "Seninle geçen küçücük bir an bile benim için çok değerli.",
+    "İyi ki yollarımız kesişmiş.",
+    "Seni her gün biraz daha çok seviyorum.",
+    "Benim için dünyanın en güzel yeri, senin olduğun yer.",
+    "Kalbim seni görünce evine dönmüş gibi oluyor.",
+    "Sana söyleyemediğim binlerce güzel şey var.",
+    "Ne kadar yıldız varsa gökyüzünde, o kadar sebebim var seni sevmek için.",
+    "Sen benim en güzel hikâyemsin."
+];
 
-
-
-/* =====================================================
-   GALAKSİ PARÇACIKLARI
-===================================================== */
+/* =========================================================
+   PARÇACIKLAR
+========================================================= */
 
 const particles = [];
 
+const mobile = W < 700;
+const PARTICLE_COUNT = mobile ? 3800 : 6200;
 
-/*
-   Telefonu fazla yormamak için
-   parçacık sayısını ekrana göre ayarlıyoruz.
-*/
+function random(min,max){
+    return Math.random() * (max-min) + min;
+}
 
-const PARTICLE_COUNT =
-    W < 600
-    ? 6500
-    : 10000;
+for(let i=0;i<PARTICLE_COUNT;i++){
 
+    const arm = Math.floor(Math.random()*5);
 
-for(
-    let i=0;
-    i<PARTICLE_COUNT;
-    i++
-){
+    // Galaksinin yarıçapı
+    const radius = Math.pow(Math.random(),0.58) * 1.0;
 
-    const arm =
-        Math.floor(
-            Math.random()*6
-        );
+    // Spiral yapı
+    const baseAngle =
+        arm * (Math.PI*2/5) +
+        radius * 5.7;
 
+    const spread = random(-0.30,0.30);
 
-    const radius =
-        Math.pow(
-            Math.random(),
-            .64
-        )
-        *
-        470;
+    const angle = baseAngle + spread;
 
+    const x = Math.cos(angle) * radius;
+    const z = Math.sin(angle) * radius;
 
-    /*
-       Spiral kıvrımı
-    */
-
-    const angle =
-
-        arm *
-        Math.PI *
-        2 /
-        6
-
-        +
-
-        radius *
-        .012
-
-        +
-
-        (
-            Math.random()-.5
-        )
-        *
-        (
-            .12+
-            radius*.0008
-        );
-
+    // Merkezde daha yoğun
+    const y =
+        random(-0.045,0.045) *
+        (0.25 + radius*1.4);
 
     particles.push({
+        x,
+        y,
+        z,
 
-        radius,
+        size: random(.35,1.5) *
+              (radius < .2 ? 1.2 : 1),
 
-        angle,
+        brightness: random(.35,1),
 
-        depth:
-            (
-                Math.random()-.5
-            ),
-
-        size:
-            .35+
-            Math.random()*1.55,
-
-        brightness:
-            .25+
-            Math.random()*.75,
-
-        color:
-            Math.random(),
-
-        speed:
-            .0002+
-            Math.random()*.0008
-
+        // Hafif renk çeşitliliği
+        tone: Math.random()
     });
-
 }
 
+/* =========================================================
+   YILDIZLAR - ARKA PLAN
+========================================================= */
 
+const backgroundStars = [];
 
-/* =====================================================
-   ARKA PLAN YILDIZLARI
-===================================================== */
-
-const stars = [];
-
-
-for(
-    let i=0;
-    i<1200;
-    i++
-){
-
-    stars.push({
-
-        x:
-            Math.random()*W,
-
-        y:
-            Math.random()*H,
-
-        size:
-            .15+
-            Math.random()*1.2,
-
-        opacity:
-            .15+
-            Math.random()*.65
-
+for(let i=0;i<(mobile?180:300);i++){
+    backgroundStars.push({
+        x:Math.random(),
+        y:Math.random(),
+        size:random(.3,1.2),
+        alpha:random(.15,.7),
+        twinkle:random(0,Math.PI*2)
     });
-
 }
 
-
-
-/* =====================================================
-   ROTATION
-===================================================== */
-
-let rotationX =
-    .38;
-
-
-let rotationY =
-    0;
-
-
-let targetX =
-    .38;
-
-
-let targetY =
-    0;
-
-
-let touching =
-    false;
-
-
-let moved =
-    false;
-
-
-let startX =
-    0;
-
-
-let startY =
-    0;
-
-
-let lastX =
-    0;
-
-
-let lastY =
-    0;
-
-
-let autoRotation =
-    true;
-
-
-
-/* =====================================================
-   MESAJLARIN KONUMU
-===================================================== */
+/* =========================================================
+   MESAJ NOKTALARI
+========================================================= */
 
 const messagePoints = [];
 
+for(let i=0;i<messages.length;i++){
 
-function createMessagePoints(){
+    const angle =
+        (i/messages.length)*Math.PI*2 +
+        random(-.12,.12);
 
-    messagePoints.length=0;
+    const radius = random(.68,.94);
 
+    messagePoints.push({
+        x:Math.cos(angle)*radius,
+        y:random(-.035,.035),
+        z:Math.sin(angle)*radius,
 
-    const radius =
-        Math.min(
-            W,
-            H
-        )
-        *
-        .37;
+        text:messages[i],
 
+        phase:random(0,Math.PI*2),
 
-    for(
-        let i=0;
-        i<messages.length;
-        i++
-    ){
-
-        messagePoints.push({
-
-            angle:
-
-                (
-                    i /
-                    messages.length
-                )
-                *
-                Math.PI
-                *
-                2,
-
-            radius:
-
-                radius +
-                (
-                    i%3
-                )
-                *
-                22
-
-        });
-
-    }
-
+        screenX:0,
+        screenY:0,
+        screenScale:1,
+        visible:false
+    });
 }
 
+/* =========================================================
+   3D DÖNÜŞ
+========================================================= */
 
-createMessagePoints();
+let rotY = 0.5;
+let rotX = -0.12;
 
+let targetRotY = rotY;
+let targetRotX = rotX;
 
-/* =====================================================
-   MESAJ KUTUSU
-===================================================== */
+let velocityY = 0.0018;
+let velocityX = 0;
 
-const messageBox =
-    document.getElementById(
-        "message"
+let dragging = false;
+
+let lastX = 0;
+let lastY = 0;
+
+function rotatePoint(p){
+
+    // Y ekseni
+    const cy = Math.cos(rotY);
+    const sy = Math.sin(rotY);
+
+    let x = p.x * cy - p.z * sy;
+    let z = p.x * sy + p.z * cy;
+
+    // X ekseni
+    const cx = Math.cos(rotX);
+    const sx = Math.sin(rotX);
+
+    let y = p.y * cx - z * sx;
+    z = p.y * sx + z * cx;
+
+    return {x,y,z};
+}
+
+/* =========================================================
+   PROJEKSİYON
+========================================================= */
+
+function project(p){
+
+    const distance = 2.35;
+
+    const scale =
+        distance /
+        (distance + p.z);
+
+    const galaxySize =
+        Math.min(W,H) * .47;
+
+    return {
+        x:CX + p.x * galaxySize * scale,
+        y:CY + p.y * galaxySize * scale,
+        scale
+    };
+}
+
+/* =========================================================
+   ARKA PLAN
+========================================================= */
+
+function drawBackground(time){
+
+    ctx.fillStyle="#000";
+    ctx.fillRect(0,0,W,H);
+
+    // Çok hafif mor uzay sisi
+    const g = ctx.createRadialGradient(
+        CX,CY,0,
+        CX,CY,Math.max(W,H)*.65
     );
 
+    g.addColorStop(0,"rgba(75,30,130,.12)");
+    g.addColorStop(.35,"rgba(30,10,60,.055)");
+    g.addColorStop(1,"rgba(0,0,0,0)");
 
-function openMessage(text){
+    ctx.fillStyle=g;
+    ctx.fillRect(0,0,W,H);
 
-    messageBox.innerHTML =
-        text
-        +
-        "<small>" +
-        "Başka bir yere dokunarak kapat" +
-        "</small>";
+    // Uzak yıldızlar
+    for(const s of backgroundStars){
 
+        const twinkle =
+            .65 +
+            Math.sin(time*.0015+s.twinkle)*.35;
 
-    messageBox.classList.add(
-        "show"
-    );
-
-}
-
-
-function closeMessage(){
-
-    messageBox.classList.remove(
-        "show"
-    );
-
-}
-
-
-
-/* =====================================================
-   MESAJ KONTROLÜ
-===================================================== */
-
-function checkMessages(
-    px,
-    py
-){
-
-    for(
-        let i=0;
-        i<messagePoints.length;
-        i++
-    ){
-
-        const m =
-            messagePoints[i];
-
-
-        const angle =
-            m.angle+
-            rotationY;
-
-
-        const x =
-            W/2
-            +
-            Math.cos(angle)
-            *
-            m.radius;
-
-
-        const y =
-            H/2
-            +
-            Math.sin(angle)
-            *
-            m.radius
-            *
-            .43;
-
-
-        const distance =
-
-            Math.sqrt(
-
-                Math.pow(
-                    px-x,
-                    2
-                )
-
-                +
-
-                Math.pow(
-                    py-y,
-                    2
-                )
-
-            );
-
-
-        /*
-          Yazılar küçük olduğu için
-          dokunma alanını yazının
-          kendisinden biraz büyük tutuyoruz.
-        */
-
-        if(
-            distance <
-            55
-        ){
-
-            openMessage(
-                messages[i]
-            );
-
-            return true;
-
-        }
-
-    }
-
-
-    return false;
-
-}
-
-
-
-/* =====================================================
-   PARMAK / MOUSE
-===================================================== */
-
-canvas.addEventListener(
-    "pointerdown",
-    e=>{
-
-        touching=true;
-
-        moved=false;
-
-        autoRotation=false;
-
-
-        startX=
-            lastX=
-            e.clientX;
-
-
-        startY=
-            lastY=
-            e.clientY;
-
-    }
-);
-
-
-canvas.addEventListener(
-    "pointermove",
-    e=>{
-
-        if(!touching)
-            return;
-
-
-        const dx =
-            e.clientX-
-            lastX;
-
-
-        const dy =
-            e.clientY-
-            lastY;
-
-
-        if(
-
-            Math.abs(
-                e.clientX-
-                startX
-            )
-
-            +
-
-            Math.abs(
-                e.clientY-
-                startY
-            )
-
-            >
-            8
-
-        ){
-
-            moved=true;
-
-        }
-
-
-        targetY +=
-            dx*.007;
-
-
-        targetX +=
-            dy*.004;
-
-
-        targetX =
-            Math.max(
-                -.9,
-                Math.min(
-                    .9,
-                    targetX
-                )
-            );
-
-
-        lastX=
-            e.clientX;
-
-
-        lastY=
-            e.clientY;
-
-    }
-);
-
-
-canvas.addEventListener(
-    "pointerup",
-    e=>{
-
-        touching=false;
-
-
-        if(!moved){
-
-            const clicked =
-                checkMessages(
-                    e.clientX,
-                    e.clientY
-                );
-
-
-            if(!clicked){
-
-                closeMessage();
-
-            }
-
-        }
-
-
-        setTimeout(
-            ()=>{
-                autoRotation=true;
-            },
-            600
-        );
-
-    }
-);
-
-
-
-/* =====================================================
-   MESAJ PENCERESİ
-===================================================== */
-
-messageBox.addEventListener(
-    "pointerdown",
-    e=>{
-        e.stopPropagation();
-    }
-);
-
-
-
-/* =====================================================
-   YILDIZLAR
-===================================================== */
-
-function drawStars(){
-
-    const now =
-        performance.now()*.001;
-
-
-    for(
-        const s of stars
-    ){
-
-        const flicker =
-            .7+
-            Math.sin(
-                now*1.5+
-                s.x
-            )
-            *.3;
-
-
-        ctx.fillStyle =
-            `rgba(
-                255,
-                255,
-                255,
-                ${s.opacity*flicker}
-            )`;
-
+        ctx.globalAlpha=s.alpha*twinkle;
+        ctx.fillStyle="#fff";
 
         ctx.beginPath();
-
-
         ctx.arc(
-            s.x,
-            s.y,
+            s.x*W,
+            s.y*H,
             s.size,
             0,
             Math.PI*2
         );
-
-
         ctx.fill();
-
     }
 
+    ctx.globalAlpha=1;
 }
 
+/* =========================================================
+   GALAKSİ GLOW
+========================================================= */
 
+function drawGalaxyGlow(){
 
-/* =====================================================
-   GALAKSİ
-===================================================== */
+    const radius = Math.min(W,H)*.48;
 
-function drawGalaxy(){
+    const g = ctx.createRadialGradient(
+        CX,CY,0,
+        CX,CY,radius
+    );
 
-    const cx =
-        W/2;
+    g.addColorStop(0,"rgba(255,255,255,.08)");
+    g.addColorStop(.12,"rgba(190,120,255,.13)");
+    g.addColorStop(.3,"rgba(110,55,190,.07)");
+    g.addColorStop(.65,"rgba(50,20,100,.025)");
+    g.addColorStop(1,"rgba(0,0,0,0)");
 
+    ctx.fillStyle=g;
+    ctx.beginPath();
+    ctx.arc(CX,CY,radius,0,Math.PI*2);
+    ctx.fill();
+}
 
-    const cy =
-        H/2;
+/* =========================================================
+   PARÇACIKLARI ÇİZ
+========================================================= */
 
+function drawParticles(){
 
-    const scale =
-        Math.min(
-            W,
-            H
-        )
-        /
-        900;
+    const projected=[];
 
+    for(const p of particles){
 
-    /*
-       Daha gerçekçi görünmesi için
-       dış parçacıkları azaltıyoruz.
-    */
+        const r = rotatePoint(p);
+        const q = project(r);
 
-    for(
-        const p of particles
-    ){
+        projected.push({
+            p,
+            q,
+            z:r.z
+        });
+    }
 
-        const a =
-            p.angle+
-            rotationY;
+    // Arkadakiler önce
+    projected.sort((a,b)=>b.z-a.z);
 
+    for(const item of projected){
 
-        const r =
-            p.radius*
-            scale;
+        const p=item.p;
+        const q=item.q;
 
+        // Kara deliğin içine giren yıldızları sakla
+        const dx=q.x-CX;
+        const dy=q.y-CY;
+        const dist=Math.sqrt(dx*dx+dy*dy);
 
-        const flatX =
-            Math.cos(a)*
-            r;
+        const holeRadius=Math.min(W,H)*.105;
 
-
-        const flatY =
-            Math.sin(a)*
-            r;
-
-
-        /*
-           3D eğim
-        */
-
-        const vertical =
-
-            flatY*
-            Math.cos(
-                rotationX
-            )
-
-            -
-
-            p.depth*
-            r*
-            .32*
-            Math.sin(
-                rotationX
-            );
-
-
-        const depth =
-
-            flatY*
-            Math.sin(
-                rotationX
-            )
-
-            +
-
-            p.depth*
-            r*
-            .32*
-            Math.cos(
-                rotationX
-            );
-
-
-        /*
-           Perspektif
-        */
-
-        const perspective =
-
-            1/
-            (
-                1+
-                depth*.0018
-            );
-
-
-        const x =
-            cx+
-            flatX*
-            perspective;
-
-
-        const y =
-            cy+
-            vertical*
-            perspective;
-
-
-        /*
-           Merkeze yakın
-           parçacıklar daha parlak
-        */
-
-        const centerFactor =
-
-            Math.max(
-                0,
-                1-
-                p.radius/470
-            );
-
-
-        const brightness =
-
-            p.brightness*
-            (
-                .55+
-                centerFactor*.8
-            );
-
-
-        let rColor;
-        let gColor;
-        let bColor;
-
-
-        if(
-            p.color<.48
-        ){
-
-            rColor=115;
-            gColor=55;
-            bColor=255;
-
+        if(dist<holeRadius*.72){
+            continue;
         }
 
-        else if(
-            p.color<.78
-        ){
+        const alpha =
+            Math.max(.05,
+            Math.min(1,
+            p.brightness *
+            (.45 + q.scale*.7)));
 
-            rColor=255;
-            gColor=70;
-            bColor=180;
+        ctx.globalAlpha=alpha;
 
+        let color;
+
+        if(p.tone<.72){
+            color="rgba(235,225,255,1)";
+        }else if(p.tone<.9){
+            color="rgba(180,205,255,1)";
+        }else{
+            color="rgba(255,190,235,1)";
         }
 
-        else if(
-            p.color<.92
-        ){
+        ctx.fillStyle=color;
 
-            rColor=255;
-            gColor=170;
-            bColor=75;
-
-        }
-
-        else{
-
-            rColor=255;
-            gColor=230;
-            bColor=180;
-
-        }
-
-
-        ctx.fillStyle =
-
-            `rgba(
-                ${rColor},
-                ${gColor},
-                ${bColor},
-                ${brightness}
-            )`;
-
+        const size =
+            p.size *
+            q.scale *
+            (W<700 ? 1.0 : 1.15);
 
         ctx.beginPath();
-
-
         ctx.arc(
-            x,
-            y,
-            p.size*
-            perspective,
+            q.x,
+            q.y,
+            Math.max(.35,size),
             0,
             Math.PI*2
         );
-
-
         ctx.fill();
-
     }
 
+    ctx.globalAlpha=1;
 }
 
+/* =========================================================
+   AKRESYON HALKASI
+========================================================= */
 
+function drawAccretion(){
 
-/* =====================================================
+    const R=Math.min(W,H);
+
+    ctx.save();
+    ctx.translate(CX,CY);
+
+    ctx.rotate(-.16);
+
+    // Dış parlak halka
+    const glow=ctx.createRadialGradient(
+        0,0,R*.07,
+        0,0,R*.22
+    );
+
+    glow.addColorStop(0,"rgba(0,0,0,1)");
+    glow.addColorStop(.35,"rgba(0,0,0,1)");
+    glow.addColorStop(.52,"rgba(255,120,220,.18)");
+    glow.addColorStop(.62,"rgba(170,90,255,.08)");
+    glow.addColorStop(1,"rgba(0,0,0,0)");
+
+    ctx.fillStyle=glow;
+
+    ctx.beginPath();
+    ctx.ellipse(
+        0,0,
+        R*.19,
+        R*.065,
+        0,0,Math.PI*2
+    );
+    ctx.fill();
+
+    // İnce ışıklı disk
+    ctx.globalAlpha=.8;
+
+    ctx.beginPath();
+    ctx.ellipse(
+        0,0,
+        R*.155,
+        R*.045,
+        0,0,Math.PI*2
+    );
+
+    const ring=ctx.createLinearGradient(
+        -R*.18,0,
+        R*.18,0
+    );
+
+    ring.addColorStop(0,"rgba(130,60,255,0)");
+    ring.addColorStop(.3,"rgba(200,130,255,.4)");
+    ring.addColorStop(.5,"rgba(255,220,255,.85)");
+    ring.addColorStop(.7,"rgba(210,110,255,.4)");
+    ring.addColorStop(1,"rgba(100,30,255,0)");
+
+    ctx.strokeStyle=ring;
+    ctx.lineWidth=Math.max(2,R*.008);
+    ctx.stroke();
+
+    ctx.restore();
+}
+
+/* =========================================================
    KARA DELİK
-===================================================== */
+========================================================= */
 
 function drawBlackHole(){
 
-    const cx =
-        W/2;
+    const R=Math.min(W,H);
 
-
-    const cy =
-        H/2;
-
-
-    const radius =
-        Math.min(
-            W,
-            H
-        )
-        *
-        .17;
-
-
-    /*
-       Büyük mor halo
-    */
-
-    const halo =
-        ctx.createRadialGradient(
-            cx,
-            cy,
-            0,
-            cx,
-            cy,
-            radius
-        );
-
-
-    halo.addColorStop(
-        0,
-        "rgba(0,0,0,1)"
+    const g=ctx.createRadialGradient(
+        CX,CY,0,
+        CX,CY,R*.12
     );
 
+    g.addColorStop(0,"#000");
+    g.addColorStop(.48,"#000");
+    g.addColorStop(.65,"rgba(8,3,15,.98)");
+    g.addColorStop(.78,"rgba(60,20,100,.35)");
+    g.addColorStop(1,"rgba(0,0,0,0)");
 
-    halo.addColorStop(
-        .30,
-        "rgba(5,1,15,1)"
-    );
-
-
-    halo.addColorStop(
-        .50,
-        "rgba(120,45,255,.35)"
-    );
-
-
-    halo.addColorStop(
-        .72,
-        "rgba(255,90,180,.10)"
-    );
-
-
-    halo.addColorStop(
-        1,
-        "rgba(0,0,0,0)"
-    );
-
-
-    ctx.fillStyle =
-        halo;
-
+    ctx.fillStyle=g;
 
     ctx.beginPath();
-
-
     ctx.arc(
-        cx,
-        cy,
-        radius,
+        CX,CY,
+        R*.145,
         0,
         Math.PI*2
     );
-
-
     ctx.fill();
 
-
-
-    /*
-       Kara delik
-    */
-
-    ctx.fillStyle =
-        "#000";
-
-
+    // Event horizon
     ctx.beginPath();
-
-
     ctx.arc(
-        cx,
-        cy,
-        radius*.43,
+        CX,
+        CY,
+        R*.073,
         0,
         Math.PI*2
     );
 
-
+    ctx.fillStyle="#000";
     ctx.fill();
 
-
-
-    /*
-       Akresyon halkası
-    */
-
-    ctx.save();
-
-
-    ctx.translate(
-        cx,
-        cy
-    );
-
-
-    ctx.rotate(
-        -.16+
-        rotationY*.08
-    );
-
-
-    const ringGradient =
-        ctx.createLinearGradient(
-            -radius,
-            0,
-            radius,
-            0
-        );
-
-
-    ringGradient.addColorStop(
-        0,
-        "rgba(90,40,255,0)"
-    );
-
-
-    ringGradient.addColorStop(
-        .25,
-        "rgba(120,50,255,.55)"
-    );
-
-
-    ringGradient.addColorStop(
-        .5,
-        "rgba(255,210,120,.9)"
-    );
-
-
-    ringGradient.addColorStop(
-        .75,
-        "rgba(255,70,180,.5)"
-    );
-
-
-    ringGradient.addColorStop(
-        1,
-        "rgba(80,30,255,0)"
-    );
-
-
-    ctx.strokeStyle =
-        ringGradient;
-
-
-    ctx.lineWidth =
-        radius*.08;
-
-
-    ctx.beginPath();
-
-
-    ctx.ellipse(
-        0,
-        0,
-        radius*.85,
-        radius*.28,
-        0,
-        0,
-        Math.PI*2
-    );
-
-
+    ctx.strokeStyle="rgba(180,100,255,.13)";
+    ctx.lineWidth=1;
     ctx.stroke();
-
-
-    ctx.restore();
-
 }
 
+/* =========================================================
+   MESAJLAR
+========================================================= */
 
+function drawMessages(time){
 
-/* =====================================================
-   KÜÇÜK MESAJLAR
-===================================================== */
+    for(const m of messagePoints){
 
-function drawMessages(){
+        const r=rotatePoint(m);
+        const q=project(r);
 
-    const radius =
-        Math.min(
-            W,
-            H
-        )
-        *
-        .37;
+        m.screenX=q.x;
+        m.screenY=q.y;
+        m.screenScale=q.scale;
 
+        // Kameraya bakan taraf
+        if(r.z > 1.1){
+            m.visible=false;
+            continue;
+        }
 
-    for(
-        let i=0;
-        i<messages.length;
-        i++
-    ){
+        const floatY =
+            Math.sin(time*.0015+m.phase)*3;
 
-        const m =
-            messagePoints[i];
+        const x=q.x;
+        const y=q.y+floatY;
 
+        m.visible=true;
 
-        const angle =
-            m.angle+
-            rotationY;
+        const pulse =
+            .8+
+            Math.sin(time*.002+m.phase)*.15;
 
+        const size =
+            Math.max(7,
+            Math.min(12,
+            9*q.scale));
 
-        const x =
-            W/2+
-            Math.cos(angle)
-            *
-            radius;
+        ctx.save();
 
+        ctx.globalAlpha=.38*pulse;
 
-        const y =
-            H/2+
-            Math.sin(angle)
-            *
-            radius
-            *
-            .43;
+        // küçük parıltı
+        ctx.shadowBlur=8;
+        ctx.shadowColor="rgba(210,150,255,.9)";
+        ctx.fillStyle="rgba(240,220,255,1)";
 
-
-        /*
-           Arka taraftakiler
-           daha soluk.
-        */
-
-        const depth =
-            Math.sin(angle);
-
-
-        const alpha =
-            .32+
-            (
-                depth+1
-            )
-            *
-            .25;
-
-
-        /*
-           Küçük yazı
-        */
-
-        ctx.font =
-            "400 9px Arial";
-
-
-        ctx.textAlign =
-            "center";
-
-
-        ctx.textBaseline =
-            "middle";
-
-
-        ctx.shadowColor =
-            "rgba(160,90,255,.8)";
-
-
-        ctx.shadowBlur =
-            8;
-
-
-        ctx.fillStyle =
-            `rgba(
-                255,
-                255,
-                255,
-                ${alpha}
-            )`;
-
-
-        ctx.fillText(
-            messages[i],
-            x,
-            y
-        );
-
+        ctx.beginPath();
+        ctx.arc(x,y,2.2,0,Math.PI*2);
+        ctx.fill();
 
         ctx.shadowBlur=0;
 
-    }
+        // Mesaj etiketi
+        ctx.font =
+            `${size}px Arial`;
 
+        ctx.textAlign="center";
+        ctx.textBaseline="middle";
+
+        ctx.globalAlpha=.62;
+
+        ctx.fillStyle="rgba(255,255,255,.9)";
+
+        // Mesajları kısa tutarak küçük göster
+        let short=m.text;
+
+        if(short.length>22){
+            short=short.substring(0,21)+"…";
+        }
+
+        ctx.fillText(short,x,y-9);
+
+        ctx.restore();
+    }
 }
 
-
-
-/* =====================================================
+/* =========================================================
    ANİMASYON
-===================================================== */
+========================================================= */
 
-let previous =
-    performance.now();
+let startTime=performance.now();
 
+function animate(now){
 
-function animate(){
+    const time=now-startTime;
 
-    const now =
-        performance.now();
+    // Parmak çekilince otomatik dönüş
+    if(!dragging){
 
+        targetRotY += velocityY;
+        targetRotX += velocityX;
 
-    const delta =
-        now-
-        previous;
+        velocityY *= .995;
+        velocityX *= .995;
 
+        if(Math.abs(velocityY)<.0012){
+            velocityY +=
+                (0.0018-velocityY)*.002;
+        }
 
-    previous =
-        now;
-
-
-    /*
-       Otomatik dönüş
-    */
-
-    if(
-        autoRotation &&
-        !touching
-    ){
-
-        targetY +=
-            delta*
-            .00015;
-
+        if(Math.abs(velocityX)<.0001){
+            velocityX *= .98;
+        }
     }
 
+    // yumuşak hareket
+    rotY += (targetRotY-rotY)*.08;
+    rotX += (targetRotX-rotX)*.08;
 
-    /*
-       Yumuşak dönüş
-    */
+    rotX=Math.max(-.9,Math.min(.9,rotX));
 
-    rotationY +=
+    drawBackground(time);
+    drawGalaxyGlow();
+    drawParticles();
+    drawAccretion();
+    drawBlackHole();
+    drawMessages(time);
 
-        (
-            targetY-
-            rotationY
-        )
-        *
-        .07;
+    requestAnimationFrame(animate);
+}
 
+requestAnimationFrame(animate);
 
-    rotationX +=
+/* =========================================================
+   DOKUNMA / MOUSE
+========================================================= */
 
-        (
-            targetX-
-        
+function pointerDown(x,y){
+
+    dragging=true;
+
+    lastX=x;
+    lastY=y;
+
+    velocityY=0;
+    velocityX=0;
+}
+
+function pointerMove(x,y){
+
+    if(!dragging) return;
+
+    const dx=x-lastX;
+    const dy=y-lastY;
+
+    targetRotY += dx*.006;
+    targetRotX += dy*.004;
+
+    velocityY=dx*.0015;
+    velocityX=dy*.001;
+
+    lastX=x;
+    lastY=y;
+}
+
+function pointerUp(x,y){
+
+    if(!dragging) return;
+
+    dragging=false;
+
+    // Dokunma mesafesi
+    const moved =
+        Math.abs(x-lastX)+Math.abs(y-lastY);
+
+    // Eğer neredeyse hiç hareket olmadıysa
+    // mesaj kontrolü
+}
+
+/* =========================================================
+   MESAJ TIKLAMA
+========================================================= */
+
+function checkMessage(x,y){
+
+    let closest=null;
+    let closestDist=Infinity;
+
+    for(const m of messagePoints){
+
+        if(!m.visible) continue;
+
+        const dx=x-m.screenX;
+        const dy=y-m.screenY;
+
+        const d=Math.sqrt(dx*dx+dy*dy);
+
+        const hitRadius=
+            Math.max(22,18*m.screenScale);
+
+        if(d<hitRadius && d<closestDist){
+
+            closest=m;
+            closestDist=d;
+        }
+    }
+
+    if(closest){
+
+        showMessage(closest.text);
+        return true;
+    }
+
+    return false;
+}
+
+function showMessage(text){
+
+    messageText.textContent=text;
+    messageBox.classList.add("show");
+}
+
+function hideMessage(){
+
+    messageBox.classList.remove("show");
+}
+
+/* =========================================================
+   TOUCH
+========================================================= */
+
+let touchStartX=0;
+let touchStartY=0;
+let touchMoved=false;
+
+canvas.addEventListener("touchstart",function(e){
+
+    const t=e.touches[0];
+
+    touchStartX=t.clientX;
+    touchStartY=t.clientY;
+    touchMoved=false;
+
+    pointerDown(
+        t.clientX,
+        t.clientY
+    );
+
+},{passive:false});
+
+canvas.addEventListener("touchmove",function(e){
+
+    e.preventDefault();
+
+    const t=e.touches[0];
+
+    if(
+        Math.abs(t.clientX-touchStartX)>8 ||
+        Math.abs(t.clientY-touchStartY)>8
+    ){
+        touchMoved=true;
+    }
+
+    pointerMove(
+        t.clientX,
+        t.clientY
+    );
+
+},{passive:false});
+
+canvas.addEventListener("touchend",function(e){
+
+    e.preventDefault();
+
+    const t=e.changedTouches[0];
+
+    dragging=false;
+
+    if(!touchMoved){
+
+        if(!checkMessage(
+            t.clientX,
+            t.clientY
+        )){
+
+            hideMessage();
+        }
+    }
+
+},{passive:false});
+
+/* =========================================================
+   MOUSE
+========================================================= */
+
+canvas.addEventListener("mousedown",function(e){
+
+    pointerDown(
+        e.clientX,
+        e.clientY
+    );
+
+});
+
+canvas.addEventListener("mousemove",function(e){
+
+    pointerMove(
+        e.clientX,
+        e.clientY
+    );
+
+});
+
+canvas.addEventListener("mouseup",function(e){
+
+    const wasDragging=dragging;
+
+    dragging=false;
+
+    if(wasDragging){
+
+        const dx=e.clientX-lastX;
+        const dy=e.clientY-lastY;
+
+        // Çok küçük hareket = tıklama
+        if(
+            Math.abs(dx)<5 &&
+            Math.abs(dy)<5
+        ){
+
+            if(!checkMessage(
+                e.clientX,
+                e.clientY
+            )){
+                hideMessage();
+            }
+        }
+    }
+});
+
+canvas.addEventListener("mouseleave",function(){
+    dragging=false;
+});
+
+/* =========================================================
+   MESAJ PENCERESİ
+========================================================= */
+
+messageBox.addEventListener("click",function(e){
+    e.stopPropagation();
+    hideMessage();
+});
+
+/* =========================================================
+   GİRİŞ YAZISINI YAVAŞÇA KALDIR
+========================================================= */
+
+setTimeout(function(){
+
+    intro.style.opacity="0";
+
+    setTimeout(function(){
+        intro.style.display="none";
+    },2200);
+
+},3200);
+
+</script>
+
+</body>
+</html>
